@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 public class ProjectileScript : PlayerBehaviour
 {
@@ -11,14 +12,5 @@ public class ProjectileScript : PlayerBehaviour
     void Update()
     {
         Destroy(gameObject, 3f);
-    }
-
-    private void OnTriggerEnter(Collider other)
-    {
-        if (CompareTag("Player"))
-        {
-            playerHealth -= projectileDamage;
-            Destroy(gameObject);
-        }
     }
 }

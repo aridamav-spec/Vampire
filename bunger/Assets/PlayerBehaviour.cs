@@ -2,12 +2,13 @@ using UnityEngine;
 public class PlayerBehaviour : MonoBehaviour
 {
     public float playerSpeed = 1.0f;
-    public int playerHealth = 100;
-    public int playerDamage = 10;
-    public int projectileDamage = 10;
+    private int maxHealth;
+    public int currentHealth;
+    public int playerDamage;
     void Start()
     {
-        transform.position = new Vector3(0, 1, 0);
+        currentHealth = 100;
+        transform.position = new Vector3(0, 0, -1);
     }
     void Update()
     {
@@ -16,11 +17,11 @@ public class PlayerBehaviour : MonoBehaviour
 
         if (Input.GetKey(KeyCode.W))
         {
-            transform.Translate(new Vector3(0, 0, 1) * playerSpeed * Time.deltaTime);
+            transform.Translate(new Vector3(0, 1, 0) * playerSpeed * Time.deltaTime);
         }
         if (Input.GetKey(KeyCode.S))
         {
-            transform.Translate(new Vector3(0, 0, -1) * playerSpeed * Time.deltaTime);
+            transform.Translate(new Vector3(0, -1, 0) * playerSpeed * Time.deltaTime);
         }
         if (Input.GetKey(KeyCode.A))
         {
@@ -31,5 +32,28 @@ public class PlayerBehaviour : MonoBehaviour
             transform.Translate(new Vector3(1, 0, 0) * playerSpeed * Time.deltaTime);
         }
 
+        if (horizontalInput > 0)
+        {
+            Flip(true);
+        }
+        else if (horizontalInput  < 0)
+        {
+            Flip(false);
+        }
+    }
+
+    void Flip(bool facingRight)
+    {
+        Vector3 scale = transform.localScale;
+        scale.x = facingRight ? 1 : -1;
+        transform.localScale = scale;
+    }
+    public void OnTriggerEnter(Collider other)
+    {
+        if (CompareTag("Enemy"))
+        {
+            print("Hit Player!");
+            currentHealth -= 10;
+        }
     }
 }

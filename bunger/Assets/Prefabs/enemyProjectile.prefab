@@ -154,7 +154,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: '::'
   playerSpeed: 1
-  playerHealth: 100
+  maxHealth: 100
   playerDamage: 10
-  projectileDamage: 10
   projectileDamage: 10
