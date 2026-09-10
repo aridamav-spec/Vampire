@@ -2,13 +2,15 @@ using UnityEngine;
 public class PlayerBehaviour : MonoBehaviour
 {
     public float playerSpeed = 1.0f;
-    private int maxHealth;
+    private int maxHealth = 100;
     public int currentHealth;
+    public HP healthBar;
     public int playerDamage;
     void Start()
     {
-        currentHealth = 100;
-        transform.position = new Vector3(0, 0, -1);
+        transform.position = new Vector3(0, 0, 0);
+        currentHealth = maxHealth;
+        healthBar.SetMaxHealth(maxHealth);
     }
     void Update()
     {
@@ -40,6 +42,11 @@ public class PlayerBehaviour : MonoBehaviour
         {
             Flip(false);
         }
+
+        if (Input.GetKeyDown(KeyCode.H))
+        {
+            TakeDamage(20);
+        }
     }
 
     void Flip(bool facingRight)
@@ -55,5 +62,11 @@ public class PlayerBehaviour : MonoBehaviour
             print("Hit Player!");
             currentHealth -= 10;
         }
+    }
+    public void TakeDamage(int damage)
+    {
+        currentHealth -= damage;
+
+        healthBar.SetHealth(currentHealth);
     }
 }
