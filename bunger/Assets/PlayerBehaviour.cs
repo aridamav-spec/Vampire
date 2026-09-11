@@ -45,7 +45,7 @@ public class PlayerBehaviour : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.H))
         {
-            TakeDamage(20);
+            TakeDamage(10);
         }
     }
 
@@ -55,7 +55,7 @@ public class PlayerBehaviour : MonoBehaviour
         scale.x = facingRight ? 1 : -1;
         transform.localScale = scale;
     }
-    public void OnTriggerEnter(Collider other)
+    public void OnTriggerEnter2D(Collider2D other)
     {
         if (CompareTag("Enemy"))
         {

@@ -2,20 +2,24 @@ using UnityEngine;
 
 public class Enemy2D : MonoBehaviour
 {
-    int enemyHealth;
-    int maxenemyHealth;
+    public int enemyHealth;
+    int maxenemyHealth = 10;
     void Start()
     {
-        
+        enemyHealth = maxenemyHealth;
     }
 
     void Update()
     {
-        
+        if (Input.GetKeyDown(KeyCode.B))
+        {
+            enemytakeDamage();
+        }
+
     }
-    public void takeDamage()
+    public void enemytakeDamage()
     {
-        enemyHealth--;
+        enemyHealth -= 2;
         if (enemyHealth <= 0)
         {
             Die();

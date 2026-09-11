@@ -6,7 +6,7 @@ public class Weapon : MonoBehaviour
     {
         if (CompareTag("Enemy"))
         {
-            collision.GetComponent<Enemy2D>().takeDamage();
+            collision.GetComponent<Enemy2D>().enemytakeDamage();
         }
     }
 }
