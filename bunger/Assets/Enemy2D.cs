@@ -1,11 +1,18 @@
 using UnityEngine;
-
+using System.Collections;
 public class Enemy2D : MonoBehaviour
 {
     public int enemyHealth;
     int maxenemyHealth = 10;
+
+    public GameObject sphereObject;
+    public Transform player;
+    public GameObject targetPosition;
+    [Range (0f, 5f)]
+    public float speed = 1.0f;
     void Start()
     {
+        player = GameObject.Find("Player").transform;
         enemyHealth = maxenemyHealth;
     }
 
@@ -15,7 +22,17 @@ public class Enemy2D : MonoBehaviour
         {
             enemytakeDamage();
         }
-
+        if (targetPosition != null)
+        {
+            sphereObject.transform.position = Vector2.MoveTowards(sphereObject.transform.position, player.transform.position, speed * Time.deltaTime);
+        }
+    }
+    void OnCollisionEnter2D(Collision2D other)
+    {
+        if (CompareTag("Player"))
+        {
+            print("Hit Player!");
+        }
     }
     public void enemytakeDamage()
     {
@@ -29,4 +46,5 @@ public class Enemy2D : MonoBehaviour
     {
         Destroy(gameObject);
     }
+
 }

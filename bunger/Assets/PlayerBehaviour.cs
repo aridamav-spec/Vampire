@@ -4,8 +4,14 @@ public class PlayerBehaviour : MonoBehaviour
     public float playerSpeed = 1.0f;
     private int maxHealth = 100;
     public int currentHealth;
+    public Transform enemy;
     public HP healthBar;
     public int playerDamage;
+    public float timeBetweenAttacks;
+    public GameObject Weapon;
+    bool alreadyAttacked;
+    float ProjectileSpeed = 3f;
+    public float attackRange;
     void Start()
     {
         transform.position = new Vector3(0, 0, 0);
@@ -16,6 +22,7 @@ public class PlayerBehaviour : MonoBehaviour
     {
         float horizontalInput = Input.GetAxisRaw("Horizontal");
         float verticalInput = Input.GetAxisRaw("Vertical");
+        autoAttack();
 
         if (Input.GetKey(KeyCode.W))
         {
@@ -55,13 +62,15 @@ public class PlayerBehaviour : MonoBehaviour
         scale.x = facingRight ? 1 : -1;
         transform.localScale = scale;
     }
-    public void OnTriggerEnter2D(Collider2D other)
+    void OnCollisionEnter2D(Collision2D collision)
     {
-        if (CompareTag("Enemy"))
-        {
-            print("Hit Player!");
-            currentHealth -= 10;
-        }
+        Debug.Log("Hit Player!222");
+        TakeDamage(10);
+    }
+    private void OnCollisionStay2D(Collision2D collision)
+    {
+        Debug.Log("Still Hitting Player!");
+        TakeDamage(1);
     }
     public void TakeDamage(int damage)
     {
@@ -69,4 +78,19 @@ public class PlayerBehaviour : MonoBehaviour
 
         healthBar.SetHealth(currentHealth);
     }
+    void autoAttack()
+    {
+        if (!alreadyAttacked)
+        {
+            Rigidbody2D rb = Instantiate(Weapon, transform.position, Quaternion.identity).GetComponent<Rigidbody2D>();
+            rb.AddForce(transform.forward * ProjectileSpeed, ForceMode2D.Impulse);
+
+            alreadyAttacked = true;
+            Invoke(nameof(ResetAttack), timeBetweenAttacks);
+        }
+    }
+    private void ResetAttack()
+    {
+        alreadyAttacked = false;
+    } 
 }

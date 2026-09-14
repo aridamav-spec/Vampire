@@ -30,8 +30,6 @@ public class EnemyAI : MonoBehaviour
 
         if (playerInSightRange && !playerInAttackRange) ChasePlayer();
         if (playerInSightRange && playerInAttackRange) AttackPlayer();
-
-
     }
     public void ChasePlayer()
     {
