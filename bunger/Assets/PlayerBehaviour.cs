@@ -10,7 +10,7 @@ public class PlayerBehaviour : MonoBehaviour
     public float timeBetweenAttacks;
     public GameObject Weapon;
     bool alreadyAttacked;
-    float ProjectileSpeed = 3f;
+    public float ProjectileSpeed = 10f;
     public float attackRange;
     void Start()
     {
@@ -22,7 +22,6 @@ public class PlayerBehaviour : MonoBehaviour
     {
         float horizontalInput = Input.GetAxisRaw("Horizontal");
         float verticalInput = Input.GetAxisRaw("Vertical");
-        autoAttack();
 
         if (Input.GetKey(KeyCode.W))
         {
@@ -39,6 +38,41 @@ public class PlayerBehaviour : MonoBehaviour
         if (Input.GetKey(KeyCode.D))
         {
             transform.Translate(new Vector3(1, 0, 0) * playerSpeed * Time.deltaTime);
+        }
+        if (Input.GetMouseButtonDown(0))
+        {
+            Vector3 mouseScreen = Input.mousePosition;
+            Vector3 mouseWorld = Camera.main.ScreenToWorldPoint(mouseScreen);
+            mouseWorld.z = 0f;
+            Vector3 spawnPos3 = new Vector3(transform.position.x, transform.position.y, 0f);
+            Vector2 dir = new Vector2(mouseWorld.x - spawnPos3.x, mouseWorld.y - spawnPos3.y).normalized;
+
+            GameObject proj = Instantiate(Weapon, spawnPos3, Quaternion.identity);
+            if (proj == null)
+            {
+                Debug.LogError("PlayerBehaviour: Instantiate returned null");
+                return;
+            }
+
+            // Set projectile damage if the projectile script exists
+            Weapon wp = proj.GetComponent<Weapon>();
+            if (wp != null)
+            {
+                wp.damage = playerDamage;
+            }
+            else
+            {
+                Debug.Log("PlayerBehaviour: Weapon prefab has no Weapon component.");
+            }
+
+            // Destroy the spawned weapon after 5 seconds
+            Destroy(proj, 5f);
+
+            Rigidbody2D rb = proj.GetComponent<Rigidbody2D>();
+            if (rb != null)
+            {
+                rb.linearVelocity = dir * ProjectileSpeed;
+            }
         }
 
         if (horizontalInput > 0)
@@ -78,19 +112,4 @@ public class PlayerBehaviour : MonoBehaviour
 
         healthBar.SetHealth(currentHealth);
     }
-    void autoAttack()
-    {
-        if (!alreadyAttacked)
-        {
-            Rigidbody2D rb = Instantiate(Weapon, transform.position, Quaternion.identity).GetComponent<Rigidbody2D>();
-            rb.AddForce(transform.forward * ProjectileSpeed, ForceMode2D.Impulse);
-
-            alreadyAttacked = true;
-            Invoke(nameof(ResetAttack), timeBetweenAttacks);
-        }
-    }
-    private void ResetAttack()
-    {
-        alreadyAttacked = false;
-    } 
 }

@@ -2,12 +2,13 @@ using UnityEngine;
 
 public class Weapon : MonoBehaviour
 {
-    private void OnTriggerEnter2D(Collider2D other)
+    public int damage = 2;
+    public void OnTriggerEnter2D(Collider2D other)
     {
-        if (CompareTag("Enemy"))
+        if (other.CompareTag("Enemy"))
         {
             other.GetComponent<Enemy2D>().enemytakeDamage();
             Destroy(gameObject);
         }
-    }
+    } 
 }

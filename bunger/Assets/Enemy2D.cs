@@ -27,11 +27,11 @@ public class Enemy2D : MonoBehaviour
             sphereObject.transform.position = Vector2.MoveTowards(sphereObject.transform.position, player.transform.position, speed * Time.deltaTime);
         }
     }
-    void OnCollisionEnter2D(Collision2D other)
+    public void OnTriggerEnter2D(Collider2D collision)
     {
-        if (CompareTag("Player"))
+        if (CompareTag("Weapon"))
         {
-            print("Hit Player!");
+            enemytakeDamage();
         }
     }
     public void enemytakeDamage()
