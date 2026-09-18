@@ -13,7 +13,6 @@ GameObject:
   - component: {fileID: 110973332394175323}
   - component: {fileID: 8000983925269495332}
   - component: {fileID: 3532151476620594765}
-  - component: {fileID: -5989025437151787794}
   m_Layer: 0
   m_Name: Weapon
   m_TagString: Weapon
@@ -85,7 +84,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_MaskInteraction: 0
-  m_Sprite: {fileID: 21300000, guid: 76ebd46ac3e762b4e91b5996742a2767, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 7b8b60446d9e48a48bd091562d126c47, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -171,16 +170,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee302d21ab4ac7b47b3ec42dff76269f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Weapon
---- !u!114 &-5989025437151787794
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2507368783910797066}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bf8f251686fea0c42965582a37afe72b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::WeaponProjectile
-  damage: 2
+  damage: 10

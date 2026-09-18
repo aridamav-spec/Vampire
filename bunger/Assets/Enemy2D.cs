@@ -27,16 +27,10 @@ public class Enemy2D : MonoBehaviour
             sphereObject.transform.position = Vector2.MoveTowards(sphereObject.transform.position, player.transform.position, speed * Time.deltaTime);
         }
     }
-    public void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (CompareTag("Weapon"))
-        {
-            enemytakeDamage();
-        }
-    }
+
     public void enemytakeDamage()
     {
-        enemyHealth -= 2;
+        enemyHealth -= 5;
         if (enemyHealth <= 0)
         {
             Die();

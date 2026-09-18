@@ -1,8 +1,9 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 public class PlayerBehaviour : MonoBehaviour
 {
     public float playerSpeed = 1.0f;
-    private int maxHealth = 100;
+    private int maxHealth = 200;
     public int currentHealth;
     public Transform enemy;
     public HP healthBar;
@@ -23,22 +24,10 @@ public class PlayerBehaviour : MonoBehaviour
         float horizontalInput = Input.GetAxisRaw("Horizontal");
         float verticalInput = Input.GetAxisRaw("Vertical");
 
-        if (Input.GetKey(KeyCode.W))
-        {
-            transform.Translate(new Vector3(0, 1, 0) * playerSpeed * Time.deltaTime);
-        }
-        if (Input.GetKey(KeyCode.S))
-        {
-            transform.Translate(new Vector3(0, -1, 0) * playerSpeed * Time.deltaTime);
-        }
-        if (Input.GetKey(KeyCode.A))
-        {
-            transform.Translate(new Vector3(-1, 0, 0) * playerSpeed * Time.deltaTime);
-        }
-        if (Input.GetKey(KeyCode.D))
-        {
-            transform.Translate(new Vector3(1, 0, 0) * playerSpeed * Time.deltaTime);
-        }
+        Vector3 movement = new Vector3(horizontalInput, verticalInput, 0).normalized;
+
+        transform.Translate(movement * (playerSpeed * Time.deltaTime));
+
         if (Input.GetMouseButtonDown(0))
         {
             Vector3 mouseScreen = Input.mousePosition;
@@ -50,11 +39,8 @@ public class PlayerBehaviour : MonoBehaviour
             GameObject proj = Instantiate(Weapon, spawnPos3, Quaternion.identity);
             if (proj == null)
             {
-                Debug.LogError("PlayerBehaviour: Instantiate returned null");
                 return;
             }
-
-            // Set projectile damage if the projectile script exists
             Weapon wp = proj.GetComponent<Weapon>();
             if (wp != null)
             {
@@ -62,10 +48,8 @@ public class PlayerBehaviour : MonoBehaviour
             }
             else
             {
-                Debug.Log("PlayerBehaviour: Weapon prefab has no Weapon component.");
-            }
 
-            // Destroy the spawned weapon after 5 seconds
+            }
             Destroy(proj, 5f);
 
             Rigidbody2D rb = proj.GetComponent<Rigidbody2D>();
@@ -109,7 +93,14 @@ public class PlayerBehaviour : MonoBehaviour
     public void TakeDamage(int damage)
     {
         currentHealth -= damage;
-
         healthBar.SetHealth(currentHealth);
+        if (currentHealth < 0)
+        {
+            Death();
+        }
+    }
+    public void Death()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
     }
 }

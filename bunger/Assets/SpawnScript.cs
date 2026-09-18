@@ -19,17 +19,12 @@ public class SpawnScript : MonoBehaviour
             SpawnEnemy();
             nextSpawn = 0;
         }
-
-   /*     for (int i = 0; i < enemies.Count; i++ )
-        {
-            enemies[i].SetActive(false);
-        } */
     }
     public void SpawnEnemy()
     {
         Vector3 spawnPos = Vector3.zero;
-        spawnPos.x = Random.Range(-5, 5);
-        spawnPos.y = Random.Range(-5, 5);
+        spawnPos.x = Random.Range(-10, 10);
+        spawnPos.y = Random.Range(-10, 10);
         GameObject newenemies = Instantiate(enemySpawn, spawnPos, Quaternion.identity);
         enemies.Add(newenemies);
 
