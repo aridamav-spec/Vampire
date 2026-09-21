@@ -5,9 +5,9 @@ public class XP : MonoBehaviour
     public Slider slider;
     public Gradient gradient;
     public Image fill;
-    public void SetMinimumXP(int XP)
+    public void SetNeedXP(int XP)
     {
-        slider.minValue = XP;
+        slider.maxValue = XP;
         slider.value = XP;
 
         fill.color = gradient.Evaluate(1f);

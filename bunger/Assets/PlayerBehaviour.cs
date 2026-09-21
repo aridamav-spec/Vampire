@@ -4,8 +4,7 @@ public class PlayerBehaviour : MonoBehaviour
 {
     public float playerSpeed = 1.0f;
     private int maxHealth = 200;
-    private int maxXP = 100;
-    private int startXP = 0;
+    public static int needXP = 100;
     public int currentXP;
     public int currentHealth;
     public Transform enemy;
@@ -21,9 +20,10 @@ public class PlayerBehaviour : MonoBehaviour
     {
         transform.position = new Vector3(0, 0, 0);
         currentHealth = maxHealth;
-        currentXP = startXP;
+        needXP = 100;
+        currentXP = needXP;
         healthBar.SetMaxHealth(maxHealth);
-        xpBar.SetMinimumXP(startXP);
+        xpBar.SetNeedXP(needXP);
     }
     void Update()
     {
@@ -111,10 +111,13 @@ public class PlayerBehaviour : MonoBehaviour
     }
     public void GetXP()
     {
-        currentXP += 10;
+        currentXP -= 10;
         xpBar.SetXP(currentXP);
-        if (currentXP >= maxXP)
+        if (currentXP <= 0)
         {
+            needXP = (int)(needXP * 1.1f);
+            currentXP = needXP;
+            xpBar.SetNeedXP(needXP);
             Debug.Log("BUSS");
         }
     }
