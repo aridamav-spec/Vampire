@@ -4,9 +4,13 @@ public class PlayerBehaviour : MonoBehaviour
 {
     public float playerSpeed = 1.0f;
     private int maxHealth = 200;
+    private int maxXP = 100;
+    private int startXP = 0;
+    public int currentXP;
     public int currentHealth;
     public Transform enemy;
     public HP healthBar;
+    public XP xpBar;
     public int playerDamage;
     public float timeBetweenAttacks;
     public GameObject Weapon;
@@ -17,7 +21,9 @@ public class PlayerBehaviour : MonoBehaviour
     {
         transform.position = new Vector3(0, 0, 0);
         currentHealth = maxHealth;
+        currentXP = startXP;
         healthBar.SetMaxHealth(maxHealth);
+        xpBar.SetMinimumXP(startXP);
     }
     void Update()
     {
@@ -37,19 +43,19 @@ public class PlayerBehaviour : MonoBehaviour
             Vector2 dir = new Vector2(mouseWorld.x - spawnPos3.x, mouseWorld.y - spawnPos3.y).normalized;
 
             GameObject proj = Instantiate(Weapon, spawnPos3, Quaternion.identity);
-            if (proj == null)
+    /*        if (proj == null)
             {
                 return;
             }
             Weapon wp = proj.GetComponent<Weapon>();
             if (wp != null)
             {
-                wp.damage = playerDamage;
+                wp. = playerDamage;
             }
             else
             {
 
-            }
+            } */
             Destroy(proj, 5f);
 
             Rigidbody2D rb = proj.GetComponent<Rigidbody2D>();
@@ -71,6 +77,10 @@ public class PlayerBehaviour : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.H))
         {
             TakeDamage(10);
+        }
+        if (Input.GetKeyDown(KeyCode.X))
+        {
+            GetXP();
         }
     }
 
@@ -97,6 +107,15 @@ public class PlayerBehaviour : MonoBehaviour
         if (currentHealth < 0)
         {
             Death();
+        }
+    }
+    public void GetXP()
+    {
+        currentXP += 10;
+        xpBar.SetXP(currentXP);
+        if (currentXP >= maxXP)
+        {
+            Debug.Log("BUSS");
         }
     }
     public void Death()

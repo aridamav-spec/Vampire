@@ -2,9 +2,9 @@ using UnityEngine;
 using System.Collections;
 public class Enemy2D : MonoBehaviour
 {
-    public int enemyHealth;
-    int maxenemyHealth = 10;
-
+    public float enemyHealth;
+    public float maxenemyHealth;
+    public int giveXP = 10;
     public GameObject sphereObject;
     public Transform player;
     public GameObject targetPosition;
@@ -30,7 +30,7 @@ public class Enemy2D : MonoBehaviour
 
     public void enemytakeDamage()
     {
-        enemyHealth -= 5;
+        enemyHealth -= Weapon.damage;
         if (enemyHealth <= 0)
         {
             Die();
@@ -40,5 +40,4 @@ public class Enemy2D : MonoBehaviour
     {
         Destroy(gameObject);
     }
-
 }

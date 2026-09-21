@@ -181,6 +181,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: '::'
   enemyHealth: 0
+  maxenemyHealth: 10
+  giveXP: 10
   sphereObject: {fileID: 7949358084564800732}
   player: {fileID: 0}
   targetPosition: {fileID: 0}
