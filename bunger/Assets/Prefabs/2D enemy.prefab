@@ -184,6 +184,7 @@ MonoBehaviour:
   maxenemyHealth: 10
   giveXP: 10
   sphereObject: {fileID: 7949358084564800732}
+  Orb: {fileID: 8304219796971613340, guid: d7413efc7cfec944bb10f887e2f01e6d, type: 3}
   player: {fileID: 0}
   targetPosition: {fileID: 0}
   speed: 1

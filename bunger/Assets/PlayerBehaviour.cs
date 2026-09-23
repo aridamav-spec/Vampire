@@ -7,6 +7,7 @@ public class PlayerBehaviour : MonoBehaviour
     public static int needXP = 100;
     public int currentXP;
     public int currentHealth;
+    public static float killCount = 0;
     public Transform enemy;
     public HP healthBar;
     public XP xpBar;
@@ -56,7 +57,7 @@ public class PlayerBehaviour : MonoBehaviour
             {
 
             } */
-            Destroy(proj, 5f);
+            Destroy(proj, 2f);
 
             Rigidbody2D rb = proj.GetComponent<Rigidbody2D>();
             if (rb != null)
@@ -92,8 +93,8 @@ public class PlayerBehaviour : MonoBehaviour
     }
     void OnCollisionEnter2D(Collision2D collision)
     {
-        Debug.Log("Hit Player!222");
         TakeDamage(10);
+        Debug.Log("Hit Player!222");
     }
     private void OnCollisionStay2D(Collision2D collision)
     {

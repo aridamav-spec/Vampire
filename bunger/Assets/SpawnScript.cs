@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -8,9 +9,8 @@ public class SpawnScript : MonoBehaviour
 
     [SerializeField] float SpawnRate;
     float nextSpawn = 0;
-
+    private IEnumerator coroutine;
     List<GameObject> enemies = new List<GameObject>();
-
     void Update()
     {
         nextSpawn += SpawnRate * Time.deltaTime;
@@ -22,9 +22,9 @@ public class SpawnScript : MonoBehaviour
     }
     public void SpawnEnemy()
     {
-        Vector3 spawnPos = Vector3.zero;
-        spawnPos.x = Random.Range(-10, 10);
-        spawnPos.y = Random.Range(-10, 10);
+        Vector3 spawnPos = player.transform.position;
+        spawnPos.x = Random.Range(-5, 5);
+        spawnPos.y = Random.Range(-5, 5);
         GameObject newenemies = Instantiate(enemySpawn, spawnPos, Quaternion.identity);
         enemies.Add(newenemies);
 
