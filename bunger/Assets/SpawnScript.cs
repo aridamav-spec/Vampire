@@ -11,7 +11,7 @@ public class SpawnScript : MonoBehaviour
     float nextSpawn = 0;
     private IEnumerator coroutine;
     List<GameObject> enemies = new List<GameObject>();
-    void Update()
+    public void UpdateSpawn()
     {
         nextSpawn += SpawnRate * Time.deltaTime;
         if(nextSpawn > 1)

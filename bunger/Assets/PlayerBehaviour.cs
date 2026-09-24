@@ -26,7 +26,7 @@ public class PlayerBehaviour : MonoBehaviour
         healthBar.SetMaxHealth(maxHealth);
         xpBar.SetNeedXP(needXP);
     }
-    void Update()
+    public void UpdatePlayer()
     {
         float horizontalInput = Input.GetAxisRaw("Horizontal");
         float verticalInput = Input.GetAxisRaw("Vertical");

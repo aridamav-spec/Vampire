@@ -20,23 +20,44 @@ public class Enemy2D : MonoBehaviour
 
     void Update()
     {
+        UpdateEnemy();
+    }
+
+    public void UpdateEnemy()
+    {
         if (Input.GetKeyDown(KeyCode.B))
         {
             enemytakeDamage();
         }
+        Vector3 targetWorld = player != null ? player.position : Vector3.zero;
         if (targetPosition != null)
         {
-            sphereObject.transform.position = Vector2.MoveTowards(sphereObject.transform.position, player.transform.position, speed * Time.deltaTime);
+            targetWorld = targetPosition.transform.position;
         }
+
+        Transform mover = (sphereObject != null) ? sphereObject.transform : transform;
+        mover.position = Vector2.MoveTowards(mover.position, targetWorld, speed * Time.deltaTime);
         if (PlayerBehaviour.killCount >= 10)
         {
             IncreaseHP();
         }
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            
+        }
     }
-
     public void enemytakeDamage()
     {
-        enemyHealth -= Weapon.damage;
+        enemyHealth -= 10f;
+        if (enemyHealth <= 0)
+        {
+            PlayerBehaviour.killCount++;
+            Die();
+        }
+    }
+    public void TakeDamage(int amount)
+    {
+        enemyHealth -= amount;
         if (enemyHealth <= 0)
         {
             PlayerBehaviour.killCount++;
