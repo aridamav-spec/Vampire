@@ -1,28 +1,21 @@
 using UnityEngine;
-using System.Collections;
+using System.Collections.Generic;
 public class Enemy2D : MonoBehaviour
 {
     public float enemyHealth;
     public float maxenemyHealth;
-    float deathCounter;
+    public float speed = 1f;
     public int giveXP = 10;
     public GameObject sphereObject;
     public GameObject Orb;
     public Transform player;
     public GameObject targetPosition;
-    [Range (0f, 5f)]
-    public float speed = 1.0f;
+    // [Range (0f, 5f)]
     void Start()
     {
         player = GameObject.Find("Player").transform;
         enemyHealth = maxenemyHealth;
     }
-
-    void Update()
-    {
-        UpdateEnemy();
-    }
-
     public void UpdateEnemy()
     {
         if (Input.GetKeyDown(KeyCode.B))
@@ -41,21 +34,17 @@ public class Enemy2D : MonoBehaviour
         {
             IncreaseHP();
         }
-        if (Input.GetKeyDown(KeyCode.Escape))
-        {
-            
-        }
     }
     public void enemytakeDamage()
     {
-        enemyHealth -= 10f;
+        enemyHealth -= Weapon.damage;
         if (enemyHealth <= 0)
         {
             PlayerBehaviour.killCount++;
             Die();
         }
     }
-    public void TakeDamage(int amount)
+ /*   public void TakeDamage(int amount)
     {
         enemyHealth -= amount;
         if (enemyHealth <= 0)
@@ -63,10 +52,9 @@ public class Enemy2D : MonoBehaviour
             PlayerBehaviour.killCount++;
             Die();
         }
-    }
+    } */
     public void Die()
     {
-        Destroy(gameObject);
         Vector3 spawnPos3 = new Vector3(transform.position.x, transform.position.y, 0f);
         GameObject orb = Instantiate(Orb, spawnPos3, Quaternion.identity);
     }
