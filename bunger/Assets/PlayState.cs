@@ -6,10 +6,12 @@ public class PlayState : State
     [SerializeField] SpawnScript _enemySpawner;
     [SerializeField] Enemy2D _enemy;
     public GameObject PauseUI;
+    public GameObject UpgradeUI;
 
     public override void UpdateState()
     {
         PauseUI.SetActive(false);
+        UpgradeUI.SetActive(false);
         base.UpdateState();
         _player.UpdatePlayer();
         _enemySpawner.UpdateSpawn();

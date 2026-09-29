@@ -33,6 +33,7 @@ public class Enemy2D : MonoBehaviour
         if (PlayerBehaviour.killCount >= 10)
         {
             IncreaseHP();
+            PlayerBehaviour.killCount = 0;
         }
     }
     public void enemytakeDamage()
@@ -41,18 +42,10 @@ public class Enemy2D : MonoBehaviour
         if (enemyHealth <= 0)
         {
             PlayerBehaviour.killCount++;
+            PlayerBehaviour.eliteCounter++;
             Die();
         }
     }
- /*   public void TakeDamage(int amount)
-    {
-        enemyHealth -= amount;
-        if (enemyHealth <= 0)
-        {
-            PlayerBehaviour.killCount++;
-            Die();
-        }
-    } */
     public void Die()
     {
         Vector3 spawnPos3 = new Vector3(transform.position.x, transform.position.y, 0f);

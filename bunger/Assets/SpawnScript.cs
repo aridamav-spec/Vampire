@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.Search;
 using UnityEngine;
 
 public class SpawnScript : MonoBehaviour
@@ -10,6 +11,7 @@ public class SpawnScript : MonoBehaviour
 
     [SerializeField] float SpawnRate;
     [SerializeField] float eliteSpawnRate;
+    [SerializeField] float eliteSpawnRequire = 30;
     float nextSpawn = 0;
     float nexteliteSpawn = 0;
     private IEnumerator coroutine;
@@ -23,10 +25,11 @@ public class SpawnScript : MonoBehaviour
             nextSpawn = 0;
         }
         nexteliteSpawn += eliteSpawnRate * Time.deltaTime;
-        if (nexteliteSpawn > 1)
+        if (PlayerBehaviour.eliteCounter >= eliteSpawnRequire)
         {
             SpawnEliteEnemy();
-            nexteliteSpawn = 0;
+            PlayerBehaviour.eliteCounter = 0;
+            eliteSpawnRequire -= 1;
         }
         for (int i = enemies.Count -1; i >= 0; i--)
         {

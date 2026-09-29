@@ -2,7 +2,12 @@ using UnityEngine;
 
 public class BasicOrbXP : MonoBehaviour
 {
-    public int XP = -10;
+    public int CustomizeXP = 10;
+    public static int OrbGive;
+    private void Start()
+    {
+        OrbGive = CustomizeXP;
+    }
     public void OnTriggerEnter2D(Collider2D other)
     {
         if (other.CompareTag("Player"))

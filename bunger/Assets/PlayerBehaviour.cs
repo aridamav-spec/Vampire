@@ -2,19 +2,21 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 public class PlayerBehaviour : MonoBehaviour
 {
-    public float playerSpeed = 1.0f;
+    public static float playerSpeed = 2.0f;
     private int maxHealth = 200;
     public static int needXP = 100;
     public int currentXP;
+    public static int xpLevel = 0;
     public int currentHealth;
     public static float killCount = 0;
+    public static int eliteCounter = 0;
     public Transform enemy;
     public HP healthBar;
     public XP xpBar;
     public int playerDamage;
-    public float timeBetweenAttacks;
+    public static float timeBetweenAttacks = 1f;
+    public bool alreadyAttacked;
     public GameObject Weapon;
-    bool alreadyAttacked;
     public float ProjectileSpeed = 10f;
     public float attackRange;
     void Start()
@@ -35,7 +37,7 @@ public class PlayerBehaviour : MonoBehaviour
 
         transform.Translate(movement * (playerSpeed * Time.deltaTime));
 
-        if (Input.GetMouseButtonDown(0))
+        if (alreadyAttacked == false && Input.GetMouseButton(0))
         {
             Vector3 mouseScreen = Input.mousePosition;
             Vector3 mouseWorld = Camera.main.ScreenToWorldPoint(mouseScreen);
@@ -44,19 +46,8 @@ public class PlayerBehaviour : MonoBehaviour
             Vector2 dir = new Vector2(mouseWorld.x - spawnPos3.x, mouseWorld.y - spawnPos3.y).normalized;
 
             GameObject proj = Instantiate(Weapon, spawnPos3, Quaternion.identity);
-    /*        if (proj == null)
-            {
-                return;
-            }
-            Weapon wp = proj.GetComponent<Weapon>();
-            if (wp != null)
-            {
-                wp. = playerDamage;
-            }
-            else
-            {
-
-            } */
+            alreadyAttacked = true;
+            Invoke(nameof(ResetAttack), timeBetweenAttacks);
             Destroy(proj, 2f);
 
             Rigidbody2D rb = proj.GetComponent<Rigidbody2D>();
@@ -83,6 +74,10 @@ public class PlayerBehaviour : MonoBehaviour
         {
             GetXP();
         }
+    }
+    void ResetAttack()
+    {
+        alreadyAttacked = false;
     }
 
     void Flip(bool facingRight)
@@ -112,14 +107,15 @@ public class PlayerBehaviour : MonoBehaviour
     }
     public void GetXP()
     {
-        currentXP -= 10;
+        currentXP -= BasicOrbXP.OrbGive;
         xpBar.SetXP(currentXP);
         if (currentXP <= 0)
         {
-            needXP = (int)(needXP * 1.1f);
+            needXP = (int)(needXP * 1.2f);
             currentXP = needXP;
             xpBar.SetNeedXP(needXP);
-            Debug.Log("BUSS");
+            xpLevel++;
+            GameManager.Instance.ChangeState<UpgradeState>();
         }
     }
     public void Death()
