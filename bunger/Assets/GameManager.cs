@@ -11,6 +11,7 @@ public class GameManager : StateMachine
     }   
     private void Start()
     {
+        Weapon.damage = 5;
         ChangeState<PlayState>();
     }
     private void Update()

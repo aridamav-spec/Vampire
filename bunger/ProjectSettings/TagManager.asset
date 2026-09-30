@@ -8,6 +8,8 @@ TagManager:
   - whatisGround
   - projectile
   - Weapon
+  - BigXPOrb
+  - SmallXPOrb
   layers:
   - Default
   - TransparentFX

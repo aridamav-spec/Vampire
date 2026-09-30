@@ -10,6 +10,7 @@ public class PlayerBehaviour : MonoBehaviour
     public int currentHealth;
     public static float killCount = 0;
     public static int eliteCounter = 0;
+    public int damageFrames = 0;
     public Transform enemy;
     public HP healthBar;
     public XP xpBar;
@@ -43,17 +44,17 @@ public class PlayerBehaviour : MonoBehaviour
             Vector3 mouseWorld = Camera.main.ScreenToWorldPoint(mouseScreen);
             mouseWorld.z = 0f;
             Vector3 spawnPos3 = new Vector3(transform.position.x, transform.position.y, 0f);
-            Vector2 dir = new Vector2(mouseWorld.x - spawnPos3.x, mouseWorld.y - spawnPos3.y).normalized;
+            Vector2 direction = new Vector2(mouseWorld.x - spawnPos3.x, mouseWorld.y - spawnPos3.y).normalized;
 
-            GameObject proj = Instantiate(Weapon, spawnPos3, Quaternion.identity);
+            GameObject projectile = Instantiate(Weapon, spawnPos3, Quaternion.identity);
             alreadyAttacked = true;
             Invoke(nameof(ResetAttack), timeBetweenAttacks);
-            Destroy(proj, 2f);
+            Destroy(projectile, 2f);
 
-            Rigidbody2D rb = proj.GetComponent<Rigidbody2D>();
+            Rigidbody2D rb = projectile.GetComponent<Rigidbody2D>();
             if (rb != null)
             {
-                rb.linearVelocity = dir * ProjectileSpeed;
+                rb.linearVelocity = direction * ProjectileSpeed;
             }
         }
 
@@ -79,22 +80,31 @@ public class PlayerBehaviour : MonoBehaviour
     {
         alreadyAttacked = false;
     }
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Enemy"))
+        {
+            TakeDamage(10);
+        }
+    }
+    private void OnCollisionStay2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Enemy"))
+        {
+            damageFrames++;
+            if (damageFrames >= 30)
+            {
+                TakeDamage(10);
+                damageFrames = 0;
+            }
+        }
+    }
 
     void Flip(bool facingRight)
     {
         Vector3 scale = transform.localScale;
         scale.x = facingRight ? 1 : -1;
         transform.localScale = scale;
-    }
-    void OnCollisionEnter2D(Collision2D collision)
-    {
-        TakeDamage(10);
-        Debug.Log("Hit Player!222");
-    }
-    private void OnCollisionStay2D(Collision2D collision)
-    {
-        Debug.Log("Still Hitting Player!");
-        TakeDamage(1);
     }
     public void TakeDamage(int damage)
     {
@@ -109,6 +119,7 @@ public class PlayerBehaviour : MonoBehaviour
     {
         currentXP -= BasicOrbXP.OrbGive;
         xpBar.SetXP(currentXP);
+
         if (currentXP <= 0)
         {
             needXP = (int)(needXP * 1.2f);
@@ -121,5 +132,18 @@ public class PlayerBehaviour : MonoBehaviour
     public void Death()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+    }
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.CompareTag("BigXPOrb"))
+        {
+            currentXP -= BasicOrbXP.OrbGive * 4;
+            xpBar.SetXP(currentXP);
+        }
+        if (collision.CompareTag("SmallXPOrb"))
+        {
+            currentXP -= BasicOrbXP.OrbGive;
+            xpBar.SetXP(currentXP);
+        }
     }
 }
