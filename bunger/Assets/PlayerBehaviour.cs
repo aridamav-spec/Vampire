@@ -2,20 +2,14 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 public class PlayerBehaviour : MonoBehaviour
 {
-    public static float playerSpeed = 2.0f;
     private int maxHealth = 200;
-    public static int needXP = 100;
-    public int currentXP;
-    public static int xpLevel = 0;
+    public float currentXP;
     public int currentHealth;
-    public static float killCount = 0;
-    public static int eliteCounter = 0;
     public int damageFrames = 0;
     public Transform enemy;
     public HP healthBar;
     public XP xpBar;
     public int playerDamage;
-    public static float timeBetweenAttacks = 1f;
     public bool alreadyAttacked;
     public GameObject Weapon;
     public float ProjectileSpeed = 10f;
@@ -24,10 +18,10 @@ public class PlayerBehaviour : MonoBehaviour
     {
         transform.position = new Vector3(0, 0, 0);
         currentHealth = maxHealth;
-        needXP = 100;
-        currentXP = needXP;
+        Stats.xpneeded = 100;
+        currentXP = Stats.xpneeded;
         healthBar.SetMaxHealth(maxHealth);
-        xpBar.SetNeedXP(needXP);
+        xpBar.SetNeedXP(Stats.xpneeded);
     }
     public void UpdatePlayer()
     {
@@ -36,7 +30,7 @@ public class PlayerBehaviour : MonoBehaviour
 
         Vector3 movement = new Vector3(horizontalInput, verticalInput, 0).normalized;
 
-        transform.Translate(movement * (playerSpeed * Time.deltaTime));
+        transform.Translate(movement * (Stats.playerspeed * Time.deltaTime));
 
         if (alreadyAttacked == false && Input.GetMouseButton(0))
         {
@@ -48,7 +42,7 @@ public class PlayerBehaviour : MonoBehaviour
 
             GameObject projectile = Instantiate(Weapon, spawnPos3, Quaternion.identity);
             alreadyAttacked = true;
-            Invoke(nameof(ResetAttack), timeBetweenAttacks);
+            Invoke(nameof(ResetAttack), Stats.attackspeed);
             Destroy(projectile, 2f);
 
             Rigidbody2D rb = projectile.GetComponent<Rigidbody2D>();
@@ -74,6 +68,14 @@ public class PlayerBehaviour : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.X))
         {
             GetXP();
+        }
+        if (currentXP <= 0)
+        {
+            Stats.xpneeded *= 1.2f;
+            currentXP = Stats.xpneeded;
+            xpBar.SetNeedXP(Stats.xpneeded);
+            Stats.xplevel++;
+            GameManager.Instance.ChangeState<UpgradeState>();
         }
     }
     void ResetAttack()
@@ -117,17 +119,8 @@ public class PlayerBehaviour : MonoBehaviour
     }
     public void GetXP()
     {
-        currentXP -= BasicOrbXP.OrbGive;
+        currentXP -= Stats.orbgive;
         xpBar.SetXP(currentXP);
-
-        if (currentXP <= 0)
-        {
-            needXP = (int)(needXP * 1.2f);
-            currentXP = needXP;
-            xpBar.SetNeedXP(needXP);
-            xpLevel++;
-            GameManager.Instance.ChangeState<UpgradeState>();
-        }
     }
     public void Death()
     {
@@ -137,12 +130,12 @@ public class PlayerBehaviour : MonoBehaviour
     {
         if (collision.CompareTag("BigXPOrb"))
         {
-            currentXP -= BasicOrbXP.OrbGive * 4;
+            currentXP -= Stats.orbgive * 4;
             xpBar.SetXP(currentXP);
         }
         if (collision.CompareTag("SmallXPOrb"))
         {
-            currentXP -= BasicOrbXP.OrbGive;
+            currentXP -= Stats.orbgive;
             xpBar.SetXP(currentXP);
         }
     }

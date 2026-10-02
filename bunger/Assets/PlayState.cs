@@ -5,6 +5,7 @@ public class PlayState : State
     [SerializeField] PlayerBehaviour _player;
     [SerializeField] SpawnScript _enemySpawner;
     [SerializeField] Enemy2D _enemy;
+    [SerializeField] Weapon _weapon;
     public GameObject PauseUI;
     public GameObject UpgradeUI;
 

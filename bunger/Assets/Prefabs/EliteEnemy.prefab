@@ -183,6 +183,7 @@ MonoBehaviour:
   enemyHealth: 50
   maxenemyHealth: 50
   speed: 1.5
+  giveScore: 10
   giveXP: 10
   sphereObject: {fileID: 8529476642539692754}
   Orb: {fileID: 8304219796971613340, guid: cd7c95575fdf3fd4983e32e69ee1c64f, type: 3}

@@ -13,7 +13,6 @@ public class SpawnScript : MonoBehaviour
 
     [SerializeField] float SpawnRate;
     [SerializeField] float eliteSpawnRate;
-    [SerializeField] float eliteSpawnRequire = 30;
     float nextSpawn = 0;
     float nexteliteSpawn = 0;
     List<GameObject> enemies = new List<GameObject>();
@@ -26,10 +25,10 @@ public class SpawnScript : MonoBehaviour
             nextSpawn = 0;
         }
         nexteliteSpawn += eliteSpawnRate * Time.deltaTime;
-        if (PlayerBehaviour.eliteCounter >= eliteSpawnRequire)
+        if (Stats.elitecounter >= 30)
         {
             SpawnEliteEnemy();
-            PlayerBehaviour.eliteCounter = 0;
+            Stats.elitecounter = 0;
         }
         for (int i = enemies.Count -1; i >= 0; i--)
         {
@@ -44,20 +43,24 @@ public class SpawnScript : MonoBehaviour
                 currentEnemy.UpdateEnemy();
             }
         }
-        if (PlayerBehaviour.xpLevel == 5)
+        if (Stats.xplevel == 0)
         {
-            eliteSpawnRequire = 20;
-            SpawnRate = 1;
-            return;
+            Stats.elitecounter = 30;
+            SpawnRate = 0.5f;
         }
-        if (PlayerBehaviour.xpLevel == 8)
+        if (Stats.xplevel == 5)
         {
-            eliteSpawnRequire = 10;
+            Stats.elitecounter = 20;
+            SpawnRate = 1;
+        }
+        if (Stats.xplevel == 8)
+        {
+            Stats.elitecounter = 10;
             SpawnRate = 2;
         }
-        if (PlayerBehaviour.xpLevel >= 10)
+        if (Stats.xplevel >= 10)
         {
-            eliteSpawnRequire = 5;
+            Stats.elitecounter = 5;
             SpawnRate = 2.5f;
         }
     }

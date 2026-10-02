@@ -18,7 +18,6 @@ public class StateMachine : MonoBehaviour
                 break;
             }
         }
-        Debug.LogWarning("State not found");
     }
     public virtual void UpdateStateMachine()
     {
